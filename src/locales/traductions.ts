@@ -1,0 +1,109 @@
+import i18n from "i18next";
+import { initReactI18next } from "react-i18next";
+import LanguageDetector from "i18next-browser-languagedetector";
+
+i18n
+  .use(LanguageDetector)
+  .use(initReactI18next)
+  .init({
+    fallbackLng: "en",
+    interpolation: {
+      escapeValue: false,
+    },
+    resources: {
+      en: {
+        translation: {
+          welcome: "Welcome to",
+          title: "Nay's Dreams",
+          description:
+            "Explore a collection of Shadcn UI blocks and components, ready to preview and copy. Streamline your development workflow with easy-to-implement examples.",
+          getStarted: "Get Started",
+          watchDemo: "Watch Demo",
+          "search.language": "Language",
+          system: "System",
+          dark: "Dark",
+          light: "Light",
+          home: "Home",
+          blog: "Blog",
+          about: "About",
+          products: "Products",
+          contact: "Contact Us",
+          "login.title": "Login",
+          "methods.login": "Choose a method to login",
+          "login.button.google": "Login with Google",
+          "login.or": "Or",
+          "login.button": "Login",
+          "login.noAccount": "Not have account?",
+          "login.register": "Register",
+          "login.success": "Login successful",
+          "login.error": "Login error",
+          "register.title": "Register",
+          "register.description": "Create an account to access",
+          "register.button": "Register",
+          "register.success": "Register successful",
+          "register.error": "Register error",
+          "register.noAccount": "Not have account?",
+          "register.login": "Login",
+          name: "Name",
+          "name.placeholder": "Enter your name",
+          email: "Email",
+          "email.placeholder": "Enter your email",
+          password: "Password",
+          "password.placeholder": "Enter your password",
+          passwordConfirm: "Confirm Password",
+          "passwordConfirm.placeholder": "Confirm your password",
+          register: "Register",
+
+          "register.Account": "have account?",
+        },
+      },
+
+      es: {
+        translation: {
+          welcome: "Bienvenido a",
+          title: "Los Sueños de Nay",
+          description:
+            "Explora una colección de bloques y componentes de Shadcn UI, listos para previsualizar y copiar. Optimiza tu flujo de trabajo de desarrollo con ejemplos fáciles de implementar.",
+          getStarted: "Comenzar",
+          watchDemo: "Ver Demo",
+          "search.language": "Idioma",
+          system: "Sistema",
+          dark: "Oscuro",
+          light: "Claro",
+          home: "Inicio",
+          blog: "Blog",
+          about: "Sobre Nosotros",
+          products: "Productos",
+          contact: "Contáctanos",
+          "login.title": "Inicio de Sesión",
+          "methods.login": "Elige un método para iniciar sesión",
+          "login.button.google": "Iniciar Sesión con Google",
+          "login.or": "O",
+          "login.button": "Iniciar Sesión",
+          "login.noAccount": "¿No tienes una cuenta?",
+          "login.register": "Regístrate",
+          "login.success": "Inicio de sesión exitoso",
+          "login.error": "Error de inicio de sesión",
+          "register.title": "Registro",
+          "register.description": "Crea una cuenta para acceder",
+          "register.button": "Registrarse",
+          "register.success": "Registro exitoso",
+          "register.error": "Error al registrar usuario",
+          "register.noAccount": "¿No tienes una cuenta?",
+          "register.login": "Iniciar Sesión",
+          name: "Nombre",
+          "name.placeholder": "Introduce tu nombre",
+          email: "Correo Electrónico",
+          "email.placeholder": "Introduce tu correo electrónico",
+          password: "Contraseña",
+          "password.placeholder": "Introduce tu contraseña",
+          passwordConfirm: "Confirmar Contraseña",
+          "passwordConfirm.placeholder": "Confirma tu contraseña",
+          register: "Registrar",
+          "register.Account": "¿Tienes una cuenta?",
+        },
+      },
+    },
+  });
+
+export default i18n;
