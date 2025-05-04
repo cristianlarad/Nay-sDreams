@@ -23,12 +23,12 @@ import { useTranslation } from "react-i18next";
 
 const Leng = [
   {
-    value: "es",
+    value: "es-ES",
     label: "Español",
     flag: "fi fi-es", // Bandera de España
   },
   {
-    value: "en",
+    value: "en-US",
     label: "English",
     flag: "fi fi-us", // Bandera de Estados Unidos
   },

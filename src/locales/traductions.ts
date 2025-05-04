@@ -6,12 +6,12 @@ i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
-    fallbackLng: "en",
+    fallbackLng: "en-US",
     interpolation: {
       escapeValue: false,
     },
     resources: {
-      en: {
+      "en-US": {
         translation: {
           welcome: "Welcome to",
           title: "Nay's Dreams",
@@ -58,7 +58,7 @@ i18n
         },
       },
 
-      es: {
+      "es-ES": {
         translation: {
           welcome: "Bienvenido a",
           title: "Los Sueños de Nay",
