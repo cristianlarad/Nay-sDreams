@@ -8,7 +8,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { createProductShema, ICreateProducts } from "@/types/products";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -19,6 +18,8 @@ import { ImageIcon, PlusCircleIcon, XIcon } from "lucide-react";
 import pb from "@/utils/instancePocketbase";
 import { Spinner } from "@/components/ui/Spinner";
 import { useNavigate } from "react-router-dom";
+import FormText from "@/components/ui/FormText";
+import FormAmount from "@/components/ui/FormAmount";
 
 const CreatePRoductsPage = () => {
   const { t } = useTranslation();
@@ -135,60 +136,28 @@ const CreatePRoductsPage = () => {
               />
 
               <div className="grid md:grid-cols-2 gap-4">
-                <FormField
+                <FormText
                   control={form.control}
                   name="title"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t("title")}</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder={t("product.title.placeholder")}
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                  label="title"
+                  placeholder="title.placeholder"
+                  className=""
                 />
-                <FormField
+                <FormAmount
                   control={form.control}
                   name="price"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t("price")}</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="number"
-                          placeholder={t("product.price.placeholder")}
-                          {...field}
-                          onChange={(e) =>
-                            field.onChange(Number(e.target.value))
-                          }
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                  label="price"
+                  placeholder="price.placeholder"
+                  className=""
                 />
               </div>
 
-              <FormField
+              <FormText
                 control={form.control}
                 name="description"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("descrip")}</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder={t("product.description.placeholder")}
-                        {...field}
-                        className="min-h-[120px] resize-y"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+                label="description.create.product"
+                placeholder="description.placeholder"
+                type="textArea"
               />
               <Button
                 type="submit"
