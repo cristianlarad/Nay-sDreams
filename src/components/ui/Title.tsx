@@ -38,6 +38,7 @@ export const Title: React.FC<TitleProps> = ({
         flex 
         justify-center 
         items-center 
+        z-0
         ${className}
       `}
     >

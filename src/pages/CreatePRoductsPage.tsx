@@ -139,7 +139,7 @@ const CreatePRoductsPage = () => {
                 <FormText
                   control={form.control}
                   name="title"
-                  label="title"
+                  label="title.create.product"
                   placeholder="title.placeholder"
                   className=""
                 />
@@ -164,12 +164,12 @@ const CreatePRoductsPage = () => {
                 className="w-full mt-4 flex items-center justify-center"
                 disabled={isUploading}
               >
-                {isUploading ? "Subiendo..." : t("create.product")}
+                {isUploading ? t("uploading") : t("create.product")}
               </Button>
               <Spinner
                 isLoading={isUploading}
                 size="small"
-                message="Subiendo..."
+                message={t("uploading")}
               />
             </form>
           </Form>
