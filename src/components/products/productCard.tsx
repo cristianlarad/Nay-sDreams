@@ -1,12 +1,18 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
 import { IProduct } from "@/types/products";
 import { FormatCurrency } from "@/utils/FormatCurrency";
 
 import { ChevronRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import EditButton from "./EditButton";
 
 interface IProductsPRops {
   product: IProduct;
@@ -30,18 +36,20 @@ const ProductCard = ({ product }: IProductsPRops) => {
           <Badge className="bg-primary/5 text-primary hover:bg-primary/5 shadow-none">
             <FormatCurrency value={product.price} />
           </Badge>
-          <span className="font-medium text-xs text-primary">5 min read</span>
         </div>
         <h3 className="mt-4 text-[1.35rem] font-semibold tracking-tight">
           {product.title}
         </h3>
-        <p className="mt-2">{product.description}</p>
-        <Link to={`/products/${product.id}/edit`}>
-          <Button className="mt-6 shadow-none cursor-pointer hover:bg-primary/50">
+        <p className="mt-2 line-clamp-3">{product.description}</p>
+      </CardContent>
+      <CardFooter className="flex item-center justify-between">
+        <Link to={`/products/${product.id}/detail`}>
+          <Button className="shadow-none cursor-pointer hover:bg-primary/50">
             {t("read.more")} <ChevronRight />
           </Button>
         </Link>
-      </CardContent>
+        <EditButton id={product.id} />
+      </CardFooter>
     </Card>
   );
 };

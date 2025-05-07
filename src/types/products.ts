@@ -1,15 +1,15 @@
 import { InferType, mixed, number, object, string } from "yup";
 
 export const productShema = object({
-  id: string(),
-  title: string(),
-  description: string(),
-  price: number(),
-  collectionId: string(),
-  collectionName: string(),
-  image: string(),
-  created: string(),
-  updated: string(),
+  id: string().required(),
+  title: string().required(),
+  description: string().required(),
+  price: number().required(),
+  collectionId: string().required(),
+  collectionName: string().required(),
+  image: string().required(),
+  created: string().required(),
+  updated: string().required(),
 });
 
 export interface ProductResponse {
