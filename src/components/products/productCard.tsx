@@ -15,7 +15,7 @@ const ProductCard = ({ product }: IProductsPRops) => {
   return (
     <Card className="shadow-none overflow-hidden mb-4 rounded-md">
       <CardHeader className="p-0">
-        <div className="overflow-hidden">
+        <div className="overflow-hidden h-64 w-full">
           <img
             src={`https://nays-dream.pockethost.io/api/files/${product.collectionId}/${product.id}/${product.image}`}
             alt={product.title}
