@@ -5,6 +5,7 @@ import { IProduct } from "@/types/products";
 import { FormatCurrency } from "@/utils/FormatCurrency";
 
 import { ChevronRight } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
 interface IProductsPRops {
@@ -12,6 +13,7 @@ interface IProductsPRops {
 }
 
 const ProductCard = ({ product }: IProductsPRops) => {
+  const { t } = useTranslation();
   return (
     <Card className="shadow-none overflow-hidden mb-4 rounded-md">
       <CardHeader className="p-0">
@@ -36,7 +38,7 @@ const ProductCard = ({ product }: IProductsPRops) => {
         <p className="mt-2">{product.description}</p>
         <Link to={`/products/${product.id}/edit`}>
           <Button className="mt-6 shadow-none cursor-pointer hover:bg-primary/50">
-            Read more <ChevronRight />
+            {t("read.more")} <ChevronRight />
           </Button>
         </Link>
       </CardContent>

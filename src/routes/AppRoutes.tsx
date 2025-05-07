@@ -8,6 +8,7 @@ import LoginPage from "@/pages/auth/LoginPage";
 import CreatePRoductsPage from "@/pages/CreatePRoductsPage";
 import RegisterPage from "@/pages/auth/RegisterPage";
 import RecoveryPassword from "@/pages/auth/RecoveryPassword";
+import DetailPRoduct from "@/pages/DetailPRoduct";
 
 const AppRoutes = () => {
   const routers: RouteObject[] = [
@@ -15,7 +16,7 @@ const AppRoutes = () => {
       path: "products",
       element: <ProductsPage />,
       children: [
-        { element: <AboutPage />, path: ":id/edit" },
+        { element: <DetailPRoduct />, path: ":id/edit" },
         { element: <CreatePRoductsPage />, path: "create" },
       ],
     },
