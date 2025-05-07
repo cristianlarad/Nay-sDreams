@@ -18,19 +18,33 @@ import {
   Minus,
 } from "lucide-react";
 import LoadingPage from "@/components/loadingPage";
+import useMyMemoryTranslation from "@/utils/getLocalizedField";
+import { useTranslation } from "react-i18next";
 
 const DetailProduct = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [quantity, setQuantity] = useState(1);
   const [imageLoaded, setImageLoaded] = useState(false);
+  const { i18n } = useTranslation();
+  const targetLanguage = i18n.language; // Idioma actual de la página
+  const sourceLanguage = "es";
 
   const {
     data: product,
     isLoading,
     error,
   } = useGetOne<IProduct>("products", id ?? "");
-
+  const { translatedText: title } = useMyMemoryTranslation(
+    product?.title ?? "",
+    sourceLanguage,
+    targetLanguage
+  );
+  const { translatedText: description } = useMyMemoryTranslation(
+    product?.description ?? "",
+    sourceLanguage,
+    targetLanguage
+  );
   // Loading state
   if (isLoading) {
     return <LoadingPage />;
@@ -127,7 +141,7 @@ const DetailProduct = () => {
           <CardContent className="p-6 md:p-10 flex flex-col h-full">
             <div>
               <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
-                {product.title}
+                {title}
               </h1>
             </div>
 
@@ -141,7 +155,7 @@ const DetailProduct = () => {
               </div>
               <div className="bg-muted/50 p-4 rounded-md">
                 <p className="text-foreground/90 break-words leading-relaxed">
-                  {product.description || "Descripción no disponible."}
+                  {description || "Descripción no disponible."}
                 </p>
               </div>
             </div>
