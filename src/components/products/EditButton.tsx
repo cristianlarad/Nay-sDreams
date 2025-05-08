@@ -1,5 +1,5 @@
 import pb from "@/utils/instancePocketbase";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
