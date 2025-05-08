@@ -67,6 +67,7 @@ i18n
           uploading: "Uploading...",
           price: "Price",
           "price.placeholder": "Enter your price",
+          "read.more": "Read more",
         },
       },
 
@@ -122,6 +123,7 @@ i18n
           price: "Precio",
           "price.placeholder": "Introduce tu precio",
           uploading: "Subiendo...",
+          "read.more": "Leer más",
         },
       },
     },
