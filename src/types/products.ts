@@ -11,7 +11,12 @@ export const productShema = object({
   created: string().required(),
   updated: string().required(),
 });
-
+export interface ProductFilters {
+  // Add export
+  searchTerm: string;
+  minPrice?: number;
+  maxPrice?: number;
+}
 export interface ProductResponse {
   items: IProduct[];
   page: number;
