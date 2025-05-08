@@ -14,7 +14,7 @@ export const registerShema = object({
   passwordConfirm: string()
     .required("Confirmar contraseña es requerido")
     .oneOf([ref("password")], "Las contraseñas no coinciden"),
-  name: string().required("El nombre es requerido"),
+  username: string().required("El nombre es requerido"),
 });
 
 export type IRegister = InferType<typeof registerShema>;

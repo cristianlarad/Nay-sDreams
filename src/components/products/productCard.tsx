@@ -37,7 +37,7 @@ const ProductCard = React.memo(({ product }: IProductsPRops) => {
           }}
         >
           <img
-            src={`https://nays-dream.pockethost.io/api/files/${product.collectionId}/${product.id}/${product.image}`}
+            src={product.image_url}
             alt={product.title}
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
             loading="lazy"
