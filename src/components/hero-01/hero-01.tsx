@@ -1,9 +1,15 @@
+// src/components/hero-01/hero-01.tsx
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { ArrowUpRight, CirclePlay } from "lucide-react";
-import { Title } from "../ui/Title";
+import { Title } from "../ui/Title"; // Asegúrate que la ruta sea correcta
 
-const Hero01 = () => {
+interface Hero01Props {
+  scrollY?: number; // Prop para recibir la posición del scroll
+}
+
+const Hero01: React.FC<Hero01Props> = ({ scrollY = 0 }) => {
+  // Valor por defecto para scrollY
   const { t } = useTranslation();
 
   return (
@@ -12,7 +18,12 @@ const Hero01 = () => {
         <h1 className="text-4xl sm:text-5xl md:text-6xl md:leading-[1.2] font-bold">
           {t("welcome")}
         </h1>
-        <Title text="Nay's Dreams" className="text-center mb-8" />
+        {/* Pasa scrollY al componente Title */}
+        <Title
+          text="Nay's Dreams"
+          className="text-center mb-8"
+          scrollY={scrollY}
+        />
         <p className="mt-6 text-[17px] md:text-lg">{t("description")}</p>
         <div className="mt-12 flex items-center justify-center gap-4">
           <Button size="lg" className="rounded-full text-base">

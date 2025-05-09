@@ -15,17 +15,17 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { ImageIcon, PlusCircleIcon, XIcon } from "lucide-react";
-import pb from "@/utils/instancePocketbase";
 import { Spinner } from "@/components/ui/Spinner";
 import { useNavigate } from "react-router-dom";
 import FormText from "@/components/ui/FormText";
 import FormAmount from "@/components/ui/FormAmount";
+import usePost from "@/hooks/usePost";
+import { toast } from "sonner";
 
 const CreatePRoductsPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [isUploading, setIsUploading] = useState(false);
   const form = useForm<ICreateProducts>({
     resolver: yupResolver(createProductShema),
     defaultValues: {
@@ -36,19 +36,23 @@ const CreatePRoductsPage = () => {
     },
   });
 
-  const onSubmit = async (data: ICreateProducts) => {
-    try {
-      setIsUploading(true);
-      const record = await pb.collection("products").create(data);
-      console.log(record);
-      form.reset();
-      setImagePreview(null);
-      navigate("/products");
-    } catch (error) {
-      console.error("Error al crear producto:", error);
-    } finally {
-      setIsUploading(false);
-    }
+  const { mutate, isPending } = usePost({
+    url: "product",
+
+    onSuccess() {
+      toast.success("Producto creado exitosamente");
+      navigate(-1);
+    },
+    onError() {
+      toast.error("Error al crear producto");
+    },
+  });
+
+  const onSubmit = (data: ICreateProducts) => {
+    // react-query handles the async logic, loading states, and calls onSuccess/onError
+    mutate({
+      data, // This matches the { data: TData } structure expected by your usePost hook
+    });
   };
 
   return (
@@ -162,12 +166,12 @@ const CreatePRoductsPage = () => {
               <Button
                 type="submit"
                 className="w-full mt-4 flex items-center justify-center"
-                disabled={isUploading}
+                disabled={isPending}
               >
-                {isUploading ? t("uploading") : t("create.product")}
+                {isPending ? t("uploading") : t("create.product")}
               </Button>
               <Spinner
-                isLoading={isUploading}
+                isLoading={isPending}
                 size="small"
                 message={t("uploading")}
               />

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { registerShema } from "@/types/login";
@@ -21,25 +21,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
-import pb from "@/utils/instancePocketbase";
 import { Spinner } from "@/components/ui/Spinner";
 import { toast } from "sonner"; // Asegúrate de tener instalado sonner
 import { useTranslation } from "react-i18next";
 import { SelectLenguaje } from "@/components/ui/selectLengaje";
-interface PocketBaseError {
-  data?: {
-    data?: {
-      email?: {
-        code: string;
-        message: string;
-      };
-    };
-  };
-  message?: string;
-}
+import usePost from "@/hooks/usePost";
+
 const RegisterPage: React.FC = () => {
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
   const { t } = useTranslation();
   const form = useForm<IRegister>({
     resolver: yupResolver(registerShema),
@@ -47,54 +36,28 @@ const RegisterPage: React.FC = () => {
       email: "",
       password: "",
       passwordConfirm: "",
-      name: "",
+      username: "",
     },
   });
-
-  const onSubmit = async (data: IRegister) => {
-    try {
-      setIsLoading(true);
-
-      // Preparar datos para PocketBase
-      const { ...userData } = data;
-
-      // Crear usuario en PocketBase
-      await pb.collection("users").create({
-        ...userData,
-        passwordConfirm: data.password, // PocketBase requiere este campo
-      });
-
-      // Iniciar sesión automáticamente después del registro
-      await pb.collection("users").authWithPassword(data.email, data.password);
-
-      toast.success(t("register.success"));
+  const { mutate, isPending } = usePost({
+    url: "sign-up",
+    onSuccess() {
+      toast.success("Usuario registrado exitosamente");
       navigate("/");
-    } catch (error: PocketBaseError | unknown) {
-      console.error("Error durante el registro:", error);
-
-      // Manejo de errores específicos
-      if (
-        typeof error === "object" &&
-        error !== null &&
-        "data" in error &&
-        (error as PocketBaseError).data?.data?.email
-      ) {
-        toast.error(t("register.error"));
-        form.setError("email", {
-          type: "manual",
-          message: "Este correo ya está en uso",
-        });
-      } else {
-        toast.error(t("register.error"));
-      }
-    } finally {
-      setIsLoading(false);
-    }
+    },
+    onError() {
+      toast.error("Error al registrar usuario");
+    },
+  });
+  const onSubmit = async (data: IRegister) => {
+    mutate({
+      data,
+    });
   };
 
   return (
     <div className="flex justify-center items-center min-h-screen">
-      <Spinner isLoading={isLoading} message="Registrando usuario..." />
+      <Spinner isLoading={isPending} message="Registrando usuario..." />
 
       <div className="w-full max-w-md">
         <Card>
@@ -113,7 +76,7 @@ const RegisterPage: React.FC = () => {
               >
                 <FormField
                   control={form.control}
-                  name="name"
+                  name="username"
                   render={({ field }) => (
                     <FormItem className="grid gap-2">
                       <FormLabel>{t("name")}</FormLabel>
@@ -121,7 +84,7 @@ const RegisterPage: React.FC = () => {
                         <Input
                           placeholder={t("name.placeholder")}
                           {...field}
-                          disabled={isLoading}
+                          disabled={isPending}
                         />
                       </FormControl>
                       <FormMessage />
@@ -140,7 +103,7 @@ const RegisterPage: React.FC = () => {
                           placeholder={t("email.placeholder")}
                           {...field}
                           type="email"
-                          disabled={isLoading}
+                          disabled={isPending}
                         />
                       </FormControl>
                       <FormMessage />
@@ -159,7 +122,7 @@ const RegisterPage: React.FC = () => {
                           placeholder={t("password.placeholder")}
                           type="password"
                           {...field}
-                          disabled={isLoading}
+                          disabled={isPending}
                         />
                       </FormControl>
                       <FormMessage />
@@ -178,7 +141,7 @@ const RegisterPage: React.FC = () => {
                           placeholder="Confirma tu contraseña"
                           type="password"
                           {...field}
-                          disabled={isLoading}
+                          disabled={isPending}
                         />
                       </FormControl>
                       <FormMessage />
@@ -186,7 +149,7 @@ const RegisterPage: React.FC = () => {
                   )}
                 />
 
-                <Button type="submit" className="w-full" disabled={isLoading}>
+                <Button type="submit" className="w-full" disabled={isPending}>
                   {t("register")}
                 </Button>
               </form>

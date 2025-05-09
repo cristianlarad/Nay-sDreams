@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useGetOne } from "@/hooks/useGetOne";
-import type { IProduct } from "@/types/products";
+import type { IProductOne } from "@/types/products";
 import { FormatCurrency } from "@/utils/FormatCurrency";
 import { useParams, useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
@@ -40,16 +40,16 @@ const DetailProduct = () => {
     data: product,
     isLoading,
     error,
-  } = useGetOne<IProduct>("products", id ?? "");
+  } = useGetOne<IProductOne>(`product/${id}`);
 
   const { translatedText: title } = useMyMemoryTranslation(
-    product?.title ?? "",
+    product?.product.title ?? "",
     sourceLanguage,
     targetLanguage
   );
 
   const { translatedText: description } = useMyMemoryTranslation(
-    product?.description ?? "",
+    product?.product.title ?? "",
     sourceLanguage,
     targetLanguage
   );
@@ -110,8 +110,8 @@ const DetailProduct = () => {
   }
 
   const productImageUrl =
-    product.image && product.collectionId && product.id
-      ? `https://nays-dream.pockethost.io/api/files/${product.collectionId}/${product.id}/${product.image}`
+    product.product.image_url && product.product.id
+      ? `${product.product.image_url}`
       : "/placeholder.svg?height=800&width=800";
 
   const incrementQuantity = () => {
@@ -154,7 +154,7 @@ const DetailProduct = () => {
                   )}
                   <img
                     src={productImageUrl || "/placeholder.svg"}
-                    alt={product.title}
+                    alt={product.product.title}
                     className={`w-full h-full max-h-[300px] lg:max-h-none object-contain transition-all duration-500 ${
                       imageLoaded
                         ? "opacity-100 scale-100"
@@ -168,7 +168,7 @@ const DetailProduct = () => {
               {/* Badge de precio flotante */}
               <div className="absolute top-4 left-4 lg:top-6 lg:left-6 z-10">
                 <Badge className="bg-primary text-white text-lg font-bold px-4 py-2 rounded-full shadow-lg">
-                  <FormatCurrency value={product.price} />
+                  <FormatCurrency value={product.product.price} />
                 </Badge>
               </div>
 
@@ -199,7 +199,7 @@ const DetailProduct = () => {
                     variant="outline"
                     className="text-xs font-normal text-slate-500 dark:text-slate-400 px-2"
                   >
-                    ID: {product.id?.substring(0, 8)}
+                    ID: {product.product.id?.substring(0, 8)}
                   </Badge>
                 </div>
               </div>
@@ -278,7 +278,7 @@ const DetailProduct = () => {
                   className="w-full gap-2 bg-primary hover:bg-primary/90 text-white rounded-full py-6 shadow-lg shadow-primary/20 dark:shadow-primary/10 transition-transform hover:scale-[1.02]"
                   onClick={() =>
                     console.log(
-                      `Añadiendo ${quantity} de ${product.title} al carrito`
+                      `Añadiendo ${quantity} de ${product.product.title} al carrito`
                     )
                   }
                 >
@@ -291,8 +291,10 @@ const DetailProduct = () => {
                     {t("Total")}:
                   </div>
                   <div className="text-xl font-bold text-primary">
-                    {typeof product.price === "number" ? (
-                      <FormatCurrency value={product.price * quantity} />
+                    {typeof product.product.price === "number" ? (
+                      <FormatCurrency
+                        value={product.product.price * quantity}
+                      />
                     ) : (
                       "-"
                     )}

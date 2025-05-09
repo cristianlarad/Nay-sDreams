@@ -5,11 +5,9 @@ export const productShema = object({
   title: string().required(),
   description: string().required(),
   price: number().required(),
-  collectionId: string().required(),
-  collectionName: string().required(),
-  image: string().required(),
+
+  image_url: string().required(),
   created: string().required(),
-  updated: string().required(),
 });
 export interface ProductFilters {
   // Add export
@@ -18,7 +16,7 @@ export interface ProductFilters {
   maxPrice?: number;
 }
 export interface ProductResponse {
-  items: IProduct[];
+  products: IProduct[];
   page: number;
   perPage: number;
   totalItems: number;
@@ -51,7 +49,12 @@ const createProductShema = object({
     })
     .required("Image is required"), //
 });
+
+const productOneShema = object({
+  product: productShema,
+});
 type ICreateProducts = InferType<typeof createProductShema>;
 type IProduct = InferType<typeof productShema>;
-export type { ICreateProducts, IProduct };
-export { createProductShema };
+type IProductOne = InferType<typeof productOneShema>;
+export type { ICreateProducts, IProduct, IProductOne };
+export { createProductShema, productOneShema };
