@@ -49,7 +49,7 @@ export const LoginPage: React.FC = () => {
     e.preventDefault();
     mutate({
       data: {
-        email,
+        username: email,
         password,
       },
     });
@@ -72,11 +72,11 @@ export const LoginPage: React.FC = () => {
           <CardContent>
             <form onSubmit={handleEmailLogin} className="flex flex-col gap-6">
               <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="username">Nombre</Label>
                 <Input
-                  id="email"
-                  type="email"
-                  placeholder="tu@correo.com"
+                  id="username"
+                  type="text"
+                  placeholder="nombre"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}

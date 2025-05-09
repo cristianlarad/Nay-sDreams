@@ -6,7 +6,6 @@ import { SelectLenguaje } from "../ui/selectLengaje";
 import { ModeToggle } from "../ui/toggle-button";
 import { Link } from "react-router-dom";
 import Profile from "./Profile";
-import pb from "@/utils/instancePocketbase";
 
 const Navbar04Page = () => {
   return (
@@ -25,17 +24,15 @@ const Navbar04Page = () => {
           <NavMenu className="hidden md:block" />
 
           <div className="flex items-center ">
-            {!pb.authStore.isValid ? (
-              <Button
-                className="rounded-full cursor-pointer
+            <Button
+              className="rounded-full cursor-pointer
                 shadow-[0_2px_6px_rgba(0,0,0,0.1)] hover:shadow-[0_4px_10px_rgba(0,0,0,0.15)] transition-shadow duration-300"
-                variant="link"
-              >
-                <Link to="/login">Sign In</Link>
-              </Button>
-            ) : (
-              <Profile />
-            )}
+              variant="link"
+            >
+              <Link to="/login">Sign In</Link>
+            </Button>
+
+            <Profile />
 
             <ModeToggle />
             <SelectLenguaje />
