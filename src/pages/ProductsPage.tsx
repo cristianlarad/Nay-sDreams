@@ -48,16 +48,17 @@ const ProductsPage = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="mb-8 flex justify-center">
+      <div className="mb-8 md:flex space-y-3 md:space-y-0 justify-center">
         <ProductSearchInput
           initialSearchTerm={searchTerm}
           onSearchTermChange={handleSearchChange}
-          debounceMs={300}
+          debounceMs={1000}
         />
         <PriceFilter
           initialMinPrice={minPrice}
           initialMaxPrice={maxPrice}
           onFiltersChange={handlePriceFiltersChange}
+          debounceMs={1000}
         />
       </div>
 
