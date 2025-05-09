@@ -28,10 +28,10 @@ const ProductCard = React.memo(({ product }: IProductsPRops) => {
   const { t } = useTranslation();
 
   return (
-    <div className="group relative mb-8 mx-auto max-w-sm">
+    <div className="group relative mb-8 mx-auto w-full ">
       <div className="relative overflow-visible bg-white dark:bg-popover rounded-lg shadow-lg transition-all duration-500 group-hover:shadow-xl">
         <div
-          className="relative h-64 w-full overflow-hidden"
+          className="relative h-64 w-full "
           style={{
             clipPath: "polygon(0 0, 100% 0, 100% 85%, 85% 100%, 0 100%)",
           }}
@@ -41,8 +41,6 @@ const ProductCard = React.memo(({ product }: IProductsPRops) => {
             alt={product.title}
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
             loading="lazy"
-            width="300"
-            height="256"
           />
 
           {/* Overlay con gradiente */}

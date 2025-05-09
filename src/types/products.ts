@@ -49,7 +49,12 @@ const createProductShema = object({
     })
     .required("Image is required"), //
 });
+
+const productOneShema = object({
+  product: productShema,
+});
 type ICreateProducts = InferType<typeof createProductShema>;
 type IProduct = InferType<typeof productShema>;
-export type { ICreateProducts, IProduct };
-export { createProductShema };
+type IProductOne = InferType<typeof productOneShema>;
+export type { ICreateProducts, IProduct, IProductOne };
+export { createProductShema, productOneShema };
