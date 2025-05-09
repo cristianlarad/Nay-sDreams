@@ -24,15 +24,17 @@ const Navbar04Page = () => {
           <NavMenu className="hidden md:block" />
 
           <div className="flex items-center ">
-            <Button
-              className="rounded-full cursor-pointer
-                shadow-[0_2px_6px_rgba(0,0,0,0.1)] hover:shadow-[0_4px_10px_rgba(0,0,0,0.15)] transition-shadow duration-300"
-              variant="link"
-            >
-              <Link to="/login">Sign In</Link>
-            </Button>
-
-            <Profile />
+            {!localStorage.getItem("token") && !localStorage.getItem("user") ? (
+              <Button
+                className="rounded-full cursor-pointer
+                  shadow-[0_2px_6px_rgba(0,0,0,0.1)] hover:shadow-[0_4px_10px_rgba(0,0,0,0.15)] transition-shadow duration-300"
+                variant="link"
+              >
+                <Link to="/login">Sign In</Link>
+              </Button>
+            ) : (
+              <Profile />
+            )}
 
             <ModeToggle />
             <SelectLenguaje />
