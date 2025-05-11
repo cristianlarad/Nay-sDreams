@@ -26,6 +26,7 @@ import LoadingPage from "@/components/loadingPage";
 import useMyMemoryTranslation from "@/utils/getLocalizedField";
 import { useTranslation } from "react-i18next";
 import ProductoRatingPost from "@/components/products/PRoductoRatingPost";
+import CommentsProducts from "@/components/products/CommentsProducts";
 
 const DetailProduct = () => {
   const { id } = useParams<{ id: string }>();
@@ -305,9 +306,13 @@ const DetailProduct = () => {
           </div>
         </div>
       </div>
-      <div className="mt-5 grid grid-cols-2">
-        <ProductoRatingPost productID={product.product.id} />
-        asdasdasd
+      <div className="mt-5 grid md:grid-cols-5 gap-4">
+        <section className="md:col-span-2">
+          <ProductoRatingPost productID={product.product.id} />
+        </section>
+        <section className="md:col-span-3">
+          <CommentsProducts comments={product.product.comment ?? []} />
+        </section>
       </div>
     </div>
   );

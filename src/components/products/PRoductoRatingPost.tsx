@@ -2,7 +2,6 @@
 
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useNavigate } from "react-router-dom";
 import { t } from "i18next";
 import { Star } from "lucide-react";
 import { useState } from "react";
@@ -11,7 +10,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "../ui/card";
@@ -21,14 +19,15 @@ import { Textarea } from "../ui/textarea";
 import { commentSchema, type IComent } from "@/types/coment";
 import usePost from "@/hooks/usePost";
 import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface ProductCommentProps {
   productID: string;
 }
 
 const ProductRatingPost = ({ productID }: ProductCommentProps) => {
-  const navigate = useNavigate();
   const [hoveredRating, setHoveredRating] = useState(0);
+  const queryClient = useQueryClient();
 
   const form = useForm<IComent>({
     resolver: yupResolver(commentSchema),
@@ -41,11 +40,11 @@ const ProductRatingPost = ({ productID }: ProductCommentProps) => {
   const { mutate } = usePost({
     url: `product/${productID}/add-comment`,
     onSuccess() {
+      queryClient.invalidateQueries({ queryKey: [`product/${productID}`] });
       toast.success(t("comment.add"));
-      navigate(-1);
     },
-    onError() {
-      toast.error(t("error.comment.add"));
+    onError(error) {
+      toast.error(error.response?.data?.error);
     },
   });
 
@@ -71,7 +70,7 @@ const ProductRatingPost = ({ productID }: ProductCommentProps) => {
   const currentRating = hoveredRating || form.watch("rating");
 
   return (
-    <Card className="max-w-md w-full  ">
+    <Card className=" ">
       <CardHeader className="space-y-1 rounded-t-lg">
         <CardTitle className="text-center text-2xl font-serif text-pink-800">
           {t("rate.our.product")}
@@ -131,9 +130,6 @@ const ProductRatingPost = ({ productID }: ProductCommentProps) => {
           </form>
         </Form>
       </CardContent>
-      <CardFooter className="flex justify-center border-t border-pink-100 pt-4 text-xs text-pink-400">
-        {t("thank.you.for.helping.us.improve")}
-      </CardFooter>
     </Card>
   );
 };

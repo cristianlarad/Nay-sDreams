@@ -12,10 +12,28 @@ interface PostVariables<TData> {
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
 });
-
+axiosInstance.interceptors.request.use(
+  (config) => {
+    // Asume que el token se guarda en localStorage con la clave 'authToken'
+    // Ajusta la clave si es diferente en tu aplicación.
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+interface BackendErrorPayload {
+  error?: string; // La propiedad que esperas
+  message?: string; // Otra propiedad común
+  // ... otros campos que tu backend pueda enviar en un error
+}
 interface UsePostHookOptions<
   TData,
-  TError = AxiosError | Error,
+  TError = AxiosError<BackendErrorPayload>,
   TResponse = unknown,
   TContext = unknown
 > extends Omit<
@@ -27,7 +45,7 @@ interface UsePostHookOptions<
 
 const usePost = <
   TData = unknown,
-  TError = AxiosError | Error,
+  TError = AxiosError<BackendErrorPayload>,
   TResponse = unknown,
   TContext = unknown
 >({

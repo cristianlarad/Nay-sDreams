@@ -1,5 +1,13 @@
-import { InferType, mixed, number, object, string } from "yup";
+import { array, date, InferType, mixed, number, object, string } from "yup";
 
+const commentSchema = object({
+  id: string().required(),
+  comment: string().required(),
+  rating: number().required(),
+  username: string().required(),
+  email: string().required(),
+  created_at: date().required(),
+});
 export const productShema = object({
   id: string().required(),
   title: string().required(),
@@ -8,6 +16,7 @@ export const productShema = object({
   rating: number().default(1),
   image_url: string().required(),
   created: string().required(),
+  comment: array().of(commentSchema),
 });
 export interface ProductFilters {
   // Add export
@@ -56,5 +65,6 @@ const productOneShema = object({
 type ICreateProducts = InferType<typeof createProductShema>;
 type IProduct = InferType<typeof productShema>;
 type IProductOne = InferType<typeof productOneShema>;
-export type { ICreateProducts, IProduct, IProductOne };
-export { createProductShema, productOneShema };
+type IComment = InferType<typeof commentSchema>;
+export type { ICreateProducts, IProduct, IProductOne, IComment };
+export { createProductShema, productOneShema, commentSchema };
