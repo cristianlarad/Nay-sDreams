@@ -198,7 +198,7 @@ export default function HomePage() {
                   </div>
                 ))}
               </div>
-              <div className="mt-20 text-center">
+              <div className=" mt-10 text-center">
                 <button
                   className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-bold py-4 px-10 rounded-full text-lg shadow-lg transform hover:scale-105 transition-all duration-300 ease-in-out"
                   onClick={() => console.log("Navegar a contacto o catálogo")}
@@ -214,10 +214,10 @@ export default function HomePage() {
             style={getSectionVisibility(1)}
           >
             <div className="container mx-auto max-w-6xl mt-24">
-              <h2 className="text-4xl mt-10 sm:text-5xl font-bold mb-16 text-center text-gray-800">
+              <h2 className="text-4xl mt-10 sm:text-5xl font-bold mb-8 text-center text-gray-800">
                 Nuestros Trabajos
               </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6">
                 {[1, 2, 3].map((item) => (
                   <div
                     key={item}
@@ -239,7 +239,7 @@ export default function HomePage() {
                   </div>
                 ))}
               </div>
-              <div className="mt-11 text-center">
+              <div className="mt-8 text-center">
                 <button className="bg-white text-pink-600 border-2 border-pink-600 hover:bg-pink-50 font-bold py-3 px-8 rounded-full text-lg shadow-sm transform hover:scale-105 transition-all duration-300 ease-in-out">
                   Ver Galería Completa
                 </button>
