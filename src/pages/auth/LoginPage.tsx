@@ -15,13 +15,14 @@ import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { SelectLenguaje } from "@/components/ui/selectLengaje";
 import usePost from "@/hooks/usePost";
+import useAuth from "@/hooks/useAuth";
 
 interface IResponseLogin {
   token: string;
   user: {
     id: string;
     username: string;
-    roles: string[];
+    roles: string;
   };
 }
 
@@ -30,13 +31,18 @@ export const LoginPage: React.FC = () => {
   const [password, setPassword] = useState("");
   const { t } = useTranslation();
   const navigate = useNavigate();
-
+  const { login } = useAuth();
   const { mutate, isPending } = usePost({
     url: "login",
     onSuccess(response: IResponseLogin) {
       toast.success(t("login.success"));
       localStorage.setItem("token", response.token);
       localStorage.setItem("user", JSON.stringify(response.user));
+      login({
+        id: response.user.id,
+        username: response.user.username,
+        roles: response.user.roles as "ADMIN" | "USER",
+      });
       navigate("/");
       console.log(response);
     },

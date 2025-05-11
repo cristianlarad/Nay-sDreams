@@ -38,7 +38,8 @@ const createProductShema = object({
 
   price: number()
     .positive("Price must be positive")
-    .required("Price is required"),
+    .required("Price is required")
+    .default(0),
   image: mixed<File>()
     .test("fileSize", "File is too large", (value) => {
       // Check file size (e.g., max 5MB)

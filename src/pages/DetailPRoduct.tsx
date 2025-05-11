@@ -136,18 +136,15 @@ const DetailProduct = () => {
       </Button>
       <div className="relative">
         {/* Elementos decorativos de fondo */}
-        <div className="absolute -top-10 -left-10 w-40 h-40 bg-primary/10 dark:bg-primary/5 rounded-full blur-3xl -z-10"></div>
-        <div className="absolute -bottom-10 -right-10 w-60 h-60 bg-purple-500/10 dark:bg-purple-500/5 rounded-full blur-3xl -z-10"></div>
 
         {/* Tarjeta principal con forma no convencional */}
-        <div className="bg-white dark:bg-popover rounded-2xl overflow-hidden shadow-xl border border-slate-100 dark:border-slate-700">
+        <div className="bg-white dark:bg-popover rounded-2xl overflow-hidden shadow-xl border ">
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-0">
             {/* Columna de imagen con forma no rectangular */}
-            <div className="lg:col-span-2 relative bg-gradient-to-br from-slate-50 to-slate-100 dark:from-popover dark:to-popover p-6 lg:p-0 flex items-center justify-center">
+            <div className="lg:col-span-2 relative  dark:to-popover p-6 lg:p-0 flex items-center justify-center">
               {/* En móviles usamos un contenedor normal, en desktop usamos clip-path */}
-              <div className="relative w-full h-full min-h-[300px] lg:min-h-0 lg:absolute lg:inset-0 overflow-hidden lg:[clip-path:polygon(0_0,100%_0,85%_100%,0_100%)]">
-                <div className="absolute inset-0 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-popover dark:to-popover"></div>
-                <div className="h-full w-full flex items-center justify-center p-4 lg:p-10">
+              <div className=" w-full h-full min-h-[300px] lg:min-h-0 lg:absolute lg:inset-0 overflow-hidden ">
+                <div className="h-full w-full flex items-center justify-center p-4 ">
                   {!imageLoaded && (
                     <div className="absolute inset-0 flex items-center justify-center">
                       <div className="w-10 h-10 border-4 border-slate-200 border-t-primary rounded-full animate-spin"></div>
