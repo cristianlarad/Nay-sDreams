@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { UserCircle2, LogOut } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { useTranslation } from "react-i18next";
+import UserAvatar from "../ui/userAvatar";
 
 const Profile: React.FC = () => {
   const navigate = useNavigate();
@@ -53,7 +54,7 @@ const Profile: React.FC = () => {
         >
           <Avatar className="h-full w-full">
             <AvatarImage
-              src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+              src="https://img.icons8.com/?size=100&id=43985&format=png&color=000000"
               alt="Profile"
               className="object-cover"
             />
@@ -65,16 +66,11 @@ const Profile: React.FC = () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-64">
         <DropdownMenuLabel className="flex items-center space-x-3 py-3">
-          <Avatar className="h-12 w-12">
-            <AvatarImage
-              src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-              alt="Profile"
-              className="object-cover"
-            />
-            <AvatarFallback className="bg-primary text-primary-foreground font-bold text-lg">
-              {""}
-            </AvatarFallback>
-          </Avatar>
+          <UserAvatar
+            name={userInfo.username}
+            fallbackStyle="initials"
+            imageUrl="https://img.icons8.com/?size=100&id=44007&format=png&color=000000"
+          />
           <div className="flex flex-col">
             <span className="text-sm font-semibold">{userInfo.email}</span>
             <span className="text-xs text-muted-foreground truncate max-w-[200px]">

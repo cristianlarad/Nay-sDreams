@@ -40,6 +40,7 @@ const ProductRatingPost = ({ productID }: ProductCommentProps) => {
   const { mutate } = usePost({
     url: `product/${productID}/add-comment`,
     onSuccess() {
+      form.reset();
       queryClient.invalidateQueries({ queryKey: [`product/${productID}`] });
       toast.success(t("comment.add"));
     },

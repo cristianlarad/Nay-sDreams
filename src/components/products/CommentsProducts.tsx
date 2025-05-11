@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import { Star, User } from "lucide-react";
+import { User } from "lucide-react";
 
 import type { IComment } from "@/types/products";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
@@ -7,6 +7,7 @@ import { Avatar, AvatarFallback } from "../ui/avatar";
 import { Separator } from "../ui/separator";
 import { ScrollArea } from "../ui/scroll-area";
 import ExpandableText from "../ui/expandableText";
+import RatingProducts from "./RatingProducts";
 
 interface ICommentsProducts {
   comments: IComment[];
@@ -71,16 +72,11 @@ const CommentsProducts = ({ comments }: ICommentsProducts) => {
                     </div>
 
                     <div className="flex">
-                      {[1, 2, 3, 4, 5].map((star) => (
-                        <Star
-                          key={star}
-                          className={`w-4 h-4 ${
-                            star <= comment.rating
-                              ? "fill-pink-400 text-pink-400"
-                              : "text-gray-300"
-                          }`}
-                        />
-                      ))}
+                      <RatingProducts
+                        rating={comment.rating}
+                        size={14}
+                        showText
+                      />
                     </div>
 
                     <div className="mt-2  p-3 rounded-lg border border-pink-100">

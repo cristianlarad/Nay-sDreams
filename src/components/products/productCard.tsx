@@ -63,12 +63,14 @@ const ProductCard = React.memo(({ product }: IProductsPRops) => {
         {/* Contenido con forma asimétrica */}
         <div className="relative p-6 pt-4 pb-5">
           {/* Línea decorativa */}
-          <div className="w-20 h-1 bg-gradient-to-r from-primary to-purple-500 dark:from-primary dark:to-purple-400 rounded-full mb-4"></div>
+          <div className="flex items-center justify-between">
+            <div className="w-20 h-1 bg-gradient-to-r from-primary to-purple-500 dark:from-primary dark:to-purple-400 rounded-full mb-4"></div>
+            <RatingProducts rating={product.rating} size={20} showText />
+          </div>
           <div className="flex items-center justify-between">
             <h3 className="text-[1.35rem]  font-bold tracking-tight text-slate-800 dark:text-slate-100 group-hover:text-primary dark:group-hover:text-primary/90 transition-colors line-clamp-2">
               {title}
             </h3>
-            <RatingProducts rating={product.rating} />
           </div>
           <div className="mt-6 flex items-center justify-between">
             <Link to={`/products/${product.id}/detail`}>
