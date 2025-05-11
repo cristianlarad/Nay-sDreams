@@ -7,6 +7,7 @@ import { Textarea } from "./textarea";
 import { useTranslation } from "react-i18next";
 import { Control, FieldValues, Path } from "react-hook-form";
 import { Input } from "./input";
+import React from "react";
 
 interface FormTextProps<TFieldValues extends FieldValues> {
   control: Control<TFieldValues>;
@@ -15,6 +16,7 @@ interface FormTextProps<TFieldValues extends FieldValues> {
   placeholder?: string;
   className?: string;
   type?: "text" | "textArea";
+  typeInput?: React.ComponentProps<"input">["type"];
 }
 
 function FormText<TFieldValues extends FieldValues>({
@@ -24,6 +26,7 @@ function FormText<TFieldValues extends FieldValues>({
   placeholder,
   className,
   type,
+  typeInput,
 }: FormTextProps<TFieldValues>) {
   const { t } = useTranslation();
   return (
@@ -42,6 +45,7 @@ function FormText<TFieldValues extends FieldValues>({
               />
             ) : (
               <Input
+                type={typeInput}
                 placeholder={placeholder || t(`${name}.placeholder`)}
                 {...field}
                 className={className}

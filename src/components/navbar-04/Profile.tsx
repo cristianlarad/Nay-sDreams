@@ -19,6 +19,7 @@ const Profile: React.FC = () => {
   const [userInfo, setUserInfo] = useState<{
     username?: string;
     email?: string;
+    roles?: string;
   }>({});
 
   useEffect(() => {
@@ -82,7 +83,7 @@ const Profile: React.FC = () => {
           </div>
         </DropdownMenuLabel>
 
-        {userInfo.username === "Adrian" && (
+        {userInfo.roles === "ADMIN" && (
           <DropdownMenuItem
             onSelect={(e) => {
               e.preventDefault();

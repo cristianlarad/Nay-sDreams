@@ -25,6 +25,7 @@ import {
 import LoadingPage from "@/components/loadingPage";
 import useMyMemoryTranslation from "@/utils/getLocalizedField";
 import { useTranslation } from "react-i18next";
+import ProductoRatingPost from "@/components/products/PRoductoRatingPost";
 
 const DetailProduct = () => {
   const { id } = useParams<{ id: string }>();
@@ -132,7 +133,6 @@ const DetailProduct = () => {
         <ArrowLeft className="h-4 w-4 mr-2" />
         {t("Volver a productos")}
       </Button>
-
       <div className="relative">
         {/* Elementos decorativos de fondo */}
         <div className="absolute -top-10 -left-10 w-40 h-40 bg-primary/10 dark:bg-primary/5 rounded-full blur-3xl -z-10"></div>
@@ -304,6 +304,10 @@ const DetailProduct = () => {
             </div>
           </div>
         </div>
+      </div>
+      <div className="mt-5 grid grid-cols-2">
+        <ProductoRatingPost productID={product.product.id} />
+        asdasdasd
       </div>
     </div>
   );

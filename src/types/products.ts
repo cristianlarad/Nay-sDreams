@@ -5,7 +5,7 @@ export const productShema = object({
   title: string().required(),
   description: string().required(),
   price: number().required(),
-
+  rating: number().default(1),
   image_url: string().required(),
   created: string().required(),
 });
