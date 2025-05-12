@@ -1,15 +1,22 @@
-import { InferType, mixed, number, object, string } from "yup";
+import { array, date, InferType, mixed, number, object, string } from "yup";
 
+const commentSchema = object({
+  id: string().required(),
+  comment: string().required(),
+  rating: number().required(),
+  username: string().required(),
+  email: string().required(),
+  created_at: date().required(),
+});
 export const productShema = object({
   id: string().required(),
   title: string().required(),
   description: string().required(),
   price: number().required(),
-  collectionId: string().required(),
-  collectionName: string().required(),
-  image: string().required(),
+  rating: number().default(1),
+  image_url: string().required(),
   created: string().required(),
-  updated: string().required(),
+  comment: array().of(commentSchema),
 });
 export interface ProductFilters {
   // Add export
@@ -18,7 +25,7 @@ export interface ProductFilters {
   maxPrice?: number;
 }
 export interface ProductResponse {
-  items: IProduct[];
+  products: IProduct[];
   page: number;
   perPage: number;
   totalItems: number;
@@ -31,7 +38,8 @@ const createProductShema = object({
 
   price: number()
     .positive("Price must be positive")
-    .required("Price is required"),
+    .required("Price is required")
+    .default(0),
   image: mixed<File>()
     .test("fileSize", "File is too large", (value) => {
       // Check file size (e.g., max 5MB)
@@ -51,7 +59,26 @@ const createProductShema = object({
     })
     .required("Image is required"), //
 });
+const editProductSchema = object({
+  title: string().required("Title is required"),
+  description: string().required("Description is required"),
+  price: number()
+    .positive("Price must be positive")
+    .required("Price is required")
+    .default(0),
+});
+const productOneShema = object({
+  product: productShema,
+});
+type IEditPRoduct = InferType<typeof editProductSchema>;
 type ICreateProducts = InferType<typeof createProductShema>;
 type IProduct = InferType<typeof productShema>;
-export type { ICreateProducts, IProduct };
-export { createProductShema };
+type IProductOne = InferType<typeof productOneShema>;
+type IComment = InferType<typeof commentSchema>;
+export type { ICreateProducts, IProduct, IProductOne, IComment, IEditPRoduct };
+export {
+  createProductShema,
+  productOneShema,
+  commentSchema,
+  editProductSchema,
+};

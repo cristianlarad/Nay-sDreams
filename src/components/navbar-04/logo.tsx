@@ -1,4 +1,4 @@
-import logo from "../../../public/logo.jpg";
+import logo from "../../../public/logo.webp";
 import { Title } from "../ui/Title";
 
 interface LogoProps {

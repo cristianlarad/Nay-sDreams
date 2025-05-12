@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import EditButton from "./EditButton";
 import useMyMemoryTranslation from "@/utils/getLocalizedField";
 import React from "react";
+import RatingProducts from "./RatingProducts";
 
 interface IProductsPRops {
   product: IProduct;
@@ -28,21 +29,19 @@ const ProductCard = React.memo(({ product }: IProductsPRops) => {
   const { t } = useTranslation();
 
   return (
-    <div className="group relative mb-8 mx-auto max-w-sm">
+    <div className="group relative mb-8 mx-auto w-full ">
       <div className="relative overflow-visible bg-white dark:bg-popover rounded-lg shadow-lg transition-all duration-500 group-hover:shadow-xl">
         <div
-          className="relative h-64 w-full overflow-hidden"
+          className="relative h-64 w-full "
           style={{
             clipPath: "polygon(0 0, 100% 0, 100% 85%, 85% 100%, 0 100%)",
           }}
         >
           <img
-            src={`https://nays-dream.pockethost.io/api/files/${product.collectionId}/${product.id}/${product.image}`}
+            src={product.image_url}
             alt={product.title}
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
             loading="lazy"
-            width="300"
-            height="256"
           />
 
           {/* Overlay con gradiente */}
@@ -64,12 +63,15 @@ const ProductCard = React.memo(({ product }: IProductsPRops) => {
         {/* Contenido con forma asimétrica */}
         <div className="relative p-6 pt-4 pb-5">
           {/* Línea decorativa */}
-          <div className="w-20 h-1 bg-gradient-to-r from-primary to-purple-500 dark:from-primary dark:to-purple-400 rounded-full mb-4"></div>
-
-          <h3 className="text-[1.35rem] font-bold tracking-tight text-slate-800 dark:text-slate-100 group-hover:text-primary dark:group-hover:text-primary/90 transition-colors line-clamp-2">
-            {title}
-          </h3>
-
+          <div className="flex items-center justify-between">
+            <div className="w-20 h-1 bg-gradient-to-r from-primary to-purple-500 dark:from-primary dark:to-purple-400 rounded-full mb-4"></div>
+            <RatingProducts rating={product.rating} size={20} showText />
+          </div>
+          <div className="flex items-center justify-between">
+            <h3 className="text-[1.35rem]  font-bold tracking-tight text-slate-800 dark:text-slate-100 group-hover:text-primary dark:group-hover:text-primary/90 transition-colors line-clamp-2">
+              {title}
+            </h3>
+          </div>
           <div className="mt-6 flex items-center justify-between">
             <Link to={`/products/${product.id}/detail`}>
               <Button className=" hover:bg-primary text-white  dark:hover:bg-primary dark:text-white shadow-md transition-all duration-300">

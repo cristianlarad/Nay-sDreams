@@ -9,56 +9,62 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import pb from "@/utils/instancePocketbase";
 import { Link, useNavigate } from "react-router-dom";
 import { Spinner } from "@/components/ui/Spinner";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { SelectLenguaje } from "@/components/ui/selectLengaje";
+import usePost from "@/hooks/usePost";
+import useAuth from "@/hooks/useAuth";
+
+interface IResponseLogin {
+  token: string;
+  user: {
+    id: string;
+    username: string;
+    roles: string;
+  };
+}
 
 export const LoginPage: React.FC = () => {
-  const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { t } = useTranslation();
-  const loginWithGoogle = async () => {
-    try {
-      setIsLoading(true);
-      // Iniciar autenticación con Google
-      await pb.collection("users").authWithOAuth2({
-        provider: "google",
-        redirectUrl: "http://localhost:3000/auth/callback",
+  const navigate = useNavigate();
+  const { login } = useAuth();
+  const { mutate, isPending } = usePost({
+    url: "login",
+    onSuccess(response: IResponseLogin) {
+      toast.success(t("login.success"));
+      localStorage.setItem("token", response.token);
+      localStorage.setItem("user", JSON.stringify(response.user));
+      login({
+        id: response.user.id,
+        username: response.user.username,
+        roles: response.user.roles as "ADMIN" | "USER",
       });
-
       navigate("/");
-    } catch (error) {
-      console.error("Error de autenticación:", error);
-      // Manejar error (mostrar mensaje al usuario)
-    } finally {
-      setIsLoading(false);
-    }
-  };
+      console.log(response);
+    },
+    onError() {
+      toast.error(t("login.error"));
+    },
+  });
 
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      setIsLoading(true);
-      await pb.collection("users").authWithPassword(email, password);
-      toast.success(t("login.success"));
-      navigate("/");
-    } catch (error) {
-      console.error("Error de inicio de sesión:", error);
-      toast.error(t("login.error"));
-    } finally {
-      setIsLoading(false);
-    }
+    mutate({
+      data: {
+        username: email,
+        password,
+      },
+    });
   };
 
   return (
     <div className="flex justify-center items-center min-h-screen">
       {/* Spinner de pantalla completa */}
-      <Spinner isLoading={isLoading} message="Iniciando sesión..." />
+      <Spinner isLoading={isPending} message="Iniciando sesión..." />
 
       <div className="w-full max-w-md">
         <Card>
@@ -72,11 +78,11 @@ export const LoginPage: React.FC = () => {
           <CardContent>
             <form onSubmit={handleEmailLogin} className="flex flex-col gap-6">
               <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="username">Nombre</Label>
                 <Input
-                  id="email"
-                  type="email"
-                  placeholder="tu@correo.com"
+                  id="username"
+                  type="text"
+                  placeholder="nombre"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -92,7 +98,7 @@ export const LoginPage: React.FC = () => {
                 />
               </div>
 
-              <Button type="submit" className="w-full" disabled={isLoading}>
+              <Button type="submit" className="w-full" disabled={isPending}>
                 {t("login.button")}
               </Button>
 
@@ -104,16 +110,6 @@ export const LoginPage: React.FC = () => {
                   <span className="bg-background px-2">{t("login.or")}</span>
                 </div>
               </div>
-
-              <Button
-                variant="outline"
-                type="button"
-                className="w-full"
-                onClick={loginWithGoogle}
-                disabled={isLoading}
-              >
-                {t("login.button.google")}
-              </Button>
             </form>
             <div className="mt-4 text-center text-sm">
               <Button variant="link"></Button>

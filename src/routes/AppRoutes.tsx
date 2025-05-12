@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, RouteObject } from "react-router-dom";
+import { Routes, Route, RouteObject } from "react-router-dom";
 import MainLayout from "../layout/mainLayout";
 import HomePage from "../pages/HomePage";
 import AboutPage from "../pages/AboutPage";
@@ -10,16 +10,20 @@ import RegisterPage from "@/pages/auth/RegisterPage";
 import RecoveryPassword from "@/pages/auth/RecoveryPassword";
 import DetailPRoduct from "@/pages/DetailPRoduct";
 import EditProductPage from "@/pages/editProduct";
+import useAuth from "@/hooks/useAuth";
 
 const AppRoutes = () => {
+  const { withAdminAuth } = useAuth();
+  const WithAdminEditPRoductPage = withAdminAuth(EditProductPage);
+  const WithAdminCreateProductPage = withAdminAuth(CreatePRoductsPage);
   const routers: RouteObject[] = [
     {
       path: "products",
       element: <ProductsPage />,
       children: [
         { element: <DetailPRoduct />, path: ":id/detail" },
-        { element: <CreatePRoductsPage />, path: "create" },
-        { element: <EditProductPage />, path: ":id/edit" },
+        { element: <WithAdminCreateProductPage />, path: "create" },
+        { element: <WithAdminEditPRoductPage />, path: ":id/edit" },
       ],
     },
 
@@ -33,28 +37,26 @@ const AppRoutes = () => {
     },
   ];
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/recovery-password" element={<RecoveryPassword />} />
-        <Route path="/" element={<MainLayout />}>
-          <Route index element={<HomePage />} />
-          {routers.map((r) => (
-            <React.Fragment key={r.path}>
-              <Route path={r.path} element={r.element} />
-              {r.children?.map((c) => (
-                <Route
-                  key={`${r.path}/${c.path}`}
-                  path={`${r.path}/${c.path}`}
-                  element={c.element}
-                />
-              ))}
-            </React.Fragment>
-          ))}
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<RegisterPage />} />
+      <Route path="/recovery-password" element={<RecoveryPassword />} />
+      <Route path="/" element={<MainLayout />}>
+        <Route index element={<HomePage />} />
+        {routers.map((r) => (
+          <React.Fragment key={r.path}>
+            <Route path={r.path} element={r.element} />
+            {r.children?.map((c) => (
+              <Route
+                key={`${r.path}/${c.path}`}
+                path={`${r.path}/${c.path}`}
+                element={c.element}
+              />
+            ))}
+          </React.Fragment>
+        ))}
+      </Route>
+    </Routes>
   );
 };
 

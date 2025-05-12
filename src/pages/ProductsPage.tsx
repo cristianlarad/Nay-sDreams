@@ -30,7 +30,7 @@ const ProductsPage = () => {
     }
   }, [searchTerm, minPrice, maxPrice]);
 
-  if (isLoading && !data?.items.length && !error && !isFetching)
+  if (isLoading && !data?.products.length && !error && !isFetching)
     return <LoadingPage />;
   if (error) return <ErrorPage message={error.message} />;
 
@@ -48,28 +48,25 @@ const ProductsPage = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="mb-8 flex justify-center">
+      <div className="mb-8 md:flex space-y-3 md:space-y-0 justify-center">
         <ProductSearchInput
           initialSearchTerm={searchTerm}
           onSearchTermChange={handleSearchChange}
-          debounceMs={300}
+          debounceMs={1000}
         />
         <PriceFilter
           initialMinPrice={minPrice}
           initialMaxPrice={maxPrice}
           onFiltersChange={handlePriceFiltersChange}
+          debounceMs={1000}
         />
       </div>
 
-      {isFetching && (
-        <div className="text-center text-sm text-slate-500 dark:text-slate-400 py-4">
-          Cargando productos...
-        </div>
-      )}
+      {isFetching && <LoadingPage />}
 
-      {data?.items && data.items.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          {data.items.map((product) => (
+      {data?.products && data.products.length > 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
+          {data.products.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
@@ -85,7 +82,7 @@ const ProductsPage = () => {
         )
       )}
 
-      {data && data.items.length > 0 && data.totalPages > 1 && (
+      {data && data.products.length > 0 && data.totalPages > 1 && (
         <PaginationControls
           currentPage={currentPage}
           totalPages={data.totalPages}

@@ -12,69 +12,38 @@ import { Button } from "@/components/ui/button";
 import { UserCircle2, LogOut } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { useTranslation } from "react-i18next";
-import pb from "@/utils/instancePocketbase";
+import UserAvatar from "../ui/userAvatar";
 
 const Profile: React.FC = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [userInfo, setUserInfo] = useState<{
+    username?: string;
     email?: string;
-    name?: string;
-    avatar?: string;
+    roles?: string;
   }>({});
 
   useEffect(() => {
-    // Obtener información del usuario autenticado
-    if (pb.authStore.isValid) {
-      const user = pb.authStore.model;
-      setUserInfo({
-        email: user?.email,
-        name: user?.name || user?.username,
-        avatar: user?.avatar ? pb.files.getUrl(user, user.avatar) : undefined,
-      });
+    const userString = localStorage.getItem("user");
+    console.log(`hola${userString}`);
+
+    try {
+      const userData = JSON.parse(userString ?? "");
+      console.log(userData);
+      setUserInfo(userData); // Assuming userData is { name?: string }
+    } catch (error) {
+      console.error("Failed to parse user from localStorage", error);
+      setUserInfo({}); // Set to empty object or default if parsing fails
     }
-
-    const unsubscribe = pb.authStore.onChange((_, model) => {
-      if (model) {
-        setUserInfo({
-          email: model.email,
-          name: model.name || model.username,
-          avatar: model.avatar
-            ? pb.files.getUrl(model, model.avatar)
-            : undefined,
-        });
-      } else {
-        setUserInfo({});
-      }
-    });
-
-    // Limpiar suscripción
-    return () => unsubscribe();
   }, []);
 
   const handleLogout = async () => {
-    try {
-      pb.authStore.clear();
-      navigate("/login");
-    } catch (error) {
-      console.error("Error durante el logout:", error);
-    }
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    navigate("/login");
   };
 
   // Obtener iniciales o primera letra
-  const getInitials = () => {
-    if (userInfo.name) {
-      return userInfo.name
-        .split(" ")
-        .map((n) => n[0])
-        .join("")
-        .toUpperCase();
-    }
-    return userInfo.email ? userInfo.email[0].toUpperCase() : "U";
-  };
-
-  // No mostrar nada si no hay usuario autenticado
-  if (!pb.authStore.isValid) return null;
 
   return (
     <DropdownMenu>
@@ -85,39 +54,32 @@ const Profile: React.FC = () => {
         >
           <Avatar className="h-full w-full">
             <AvatarImage
-              src={userInfo.avatar || undefined}
+              src="https://img.icons8.com/?size=100&id=43985&format=png&color=000000"
               alt="Profile"
               className="object-cover"
             />
             <AvatarFallback className="bg-primary text-primary-foreground font-bold">
-              {getInitials()}
+              {""}
             </AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-64">
         <DropdownMenuLabel className="flex items-center space-x-3 py-3">
-          <Avatar className="h-12 w-12">
-            <AvatarImage
-              src={userInfo.avatar || undefined}
-              alt="Profile"
-              className="object-cover"
-            />
-            <AvatarFallback className="bg-primary text-primary-foreground font-bold text-lg">
-              {getInitials()}
-            </AvatarFallback>
-          </Avatar>
+          <UserAvatar
+            name={userInfo.username}
+            fallbackStyle="initials"
+            imageUrl="https://img.icons8.com/?size=100&id=44007&format=png&color=000000"
+          />
           <div className="flex flex-col">
-            <span className="text-sm font-semibold">
-              {userInfo.name || userInfo.email?.split("@")[0] || "User"}
-            </span>
+            <span className="text-sm font-semibold">{userInfo.email}</span>
             <span className="text-xs text-muted-foreground truncate max-w-[200px]">
-              {userInfo.email}
+              {userInfo.username}
             </span>
           </div>
         </DropdownMenuLabel>
 
-        {userInfo.email === "die.hts1@gmail.com" && (
+        {userInfo.roles === "ADMIN" && (
           <DropdownMenuItem
             onSelect={(e) => {
               e.preventDefault();

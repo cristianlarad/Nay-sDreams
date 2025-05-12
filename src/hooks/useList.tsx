@@ -1,43 +1,58 @@
 import { IProduct } from "@/types/products";
-import pb from "@/utils/instancePocketbase";
 import { useQuery } from "@tanstack/react-query";
-import type { ListResult } from "pocketbase";
+import axios from "axios"; // Import axios
 
-// Función genérica para obtener lista paginada desde PocketBase
+// Define a generic paginated response type, adjust if your backend differs
+export interface PaginatedResponse<T> {
+  products: T[];
+  totalItems: number;
+  totalPages: number;
+  page: number;
+  perPage: number;
+}
+
+const API_BASE_URL = import.meta.env.VITE_BASE_URL; // Example: http://localhost:8080/api
+
+// Función genérica para obtener lista paginada desde el backend Go
 const fetchList = async <T,>(
   collection: string,
   page: number,
   perPage: number,
   filterTerm?: string,
-  minPrice?: number, // Added minPrice
-  maxPrice?: number // Added maxPrice
-): Promise<ListResult<T>> => {
+  minPrice?: number,
+  maxPrice?: number
+): Promise<PaginatedResponse<T>> => {
   try {
-    const filterParts: string[] = [];
+    const params: Record<string, unknown> = {
+      page,
+      perPage,
+    };
+
     if (filterTerm && filterTerm.trim() !== "") {
-      // Escape single quotes for PocketBase filter
-      const escapedFilterTerm = filterTerm.replace(/'/g, "''");
-      filterParts.push(`title ~ '${escapedFilterTerm}'`);
+      params.search = filterTerm; // Assuming 'search' is the query param for filterTerm
     }
     if (minPrice !== undefined) {
-      filterParts.push(`price >= ${minPrice}`);
+      params.minPrice = minPrice;
     }
     if (maxPrice !== undefined) {
-      filterParts.push(`price <= ${maxPrice}`);
+      params.maxPrice = maxPrice;
     }
 
-    const filterOptions: { filter?: string } = {};
-    if (filterParts.length > 0) {
-      filterOptions.filter = filterParts.join(" && ");
-    }
-
-    // Usamos getList para obtener registros paginados
-    const records = await pb
-      .collection(collection)
-      .getList<T>(page, perPage, filterOptions);
-    return records;
+    // Construct the URL for the collection endpoint
+    // Example: http://localhost:8080/api/products
+    const response = await axios.get<PaginatedResponse<T>>(
+      `${API_BASE_URL}/${collection}`,
+      {
+        params,
+      }
+    );
+    return response.data; // Axios wraps the response in a data property
   } catch (error) {
     console.error(`Error fetching paginated ${collection}:`, error);
+    if (axios.isAxiosError(error)) {
+      // Handle Axios-specific errors if needed
+      throw new Error(error.response?.data?.message || error.message);
+    }
     throw error;
   }
 };
@@ -48,10 +63,10 @@ export const useList = <T extends object>(
   page: number,
   perPage: number,
   filterTerm?: string,
-  minPrice?: number, // Added minPrice
-  maxPrice?: number // Added maxPrice
+  minPrice?: number,
+  maxPrice?: number
 ) => {
-  return useQuery<ListResult<T>, Error>({
+  return useQuery<PaginatedResponse<T>, Error>({
     queryKey: [
       `${collection}-list`,
       page,
@@ -59,10 +74,10 @@ export const useList = <T extends object>(
       filterTerm,
       minPrice,
       maxPrice,
-    ], // Added minPrice and maxPrice to queryKey
+    ],
     queryFn: () =>
-      fetchList<T>(collection, page, perPage, filterTerm, minPrice, maxPrice), // Pass to fetchList
-    staleTime: 5 * 60 * 1000,
+      fetchList<T>(collection, page, perPage, filterTerm, minPrice, maxPrice),
+    staleTime: 5 * 60 * 1000, // 5 minutes
     refetchOnWindowFocus: false,
     retry: 2,
   });
@@ -73,12 +88,11 @@ export const useProductList = (
   page: number,
   perPage: number,
   filterTerm?: string,
-  minPrice?: number, // Added minPrice
-  maxPrice?: number // Added maxPrice
+  minPrice?: number,
+  maxPrice?: number
 ) => {
-  // Pass minPrice and maxPrice to useList
   const query = useList<IProduct>(
-    "products",
+    "product", // This will be part of the URL, e.g., /api/products
     page,
     perPage,
     filterTerm,
@@ -86,16 +100,16 @@ export const useProductList = (
     maxPrice
   );
 
-  // query.data será de tipo ListResult<IProduct> | undefined
+  // query.data será de tipo PaginatedResponse<IProduct> | undefined
   // Si query.data es undefined (cargando/error), proveer una estructura por defecto
   return {
     ...query,
     data: query.data ?? {
-      items: [],
+      products: [],
       page: page,
       perPage: perPage,
       totalItems: 0,
-      totalPages: 1,
+      totalPages: 1, // Ensure totalPages is at least 1 to prevent division by zero issues
     },
   };
 };
