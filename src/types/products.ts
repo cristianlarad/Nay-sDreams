@@ -59,13 +59,26 @@ const createProductShema = object({
     })
     .required("Image is required"), //
 });
-
+const editProductSchema = object({
+  title: string().required("Title is required"),
+  description: string().required("Description is required"),
+  price: number()
+    .positive("Price must be positive")
+    .required("Price is required")
+    .default(0),
+});
 const productOneShema = object({
   product: productShema,
 });
+type IEditPRoduct = InferType<typeof editProductSchema>;
 type ICreateProducts = InferType<typeof createProductShema>;
 type IProduct = InferType<typeof productShema>;
 type IProductOne = InferType<typeof productOneShema>;
 type IComment = InferType<typeof commentSchema>;
-export type { ICreateProducts, IProduct, IProductOne, IComment };
-export { createProductShema, productOneShema, commentSchema };
+export type { ICreateProducts, IProduct, IProductOne, IComment, IEditPRoduct };
+export {
+  createProductShema,
+  productOneShema,
+  commentSchema,
+  editProductSchema,
+};

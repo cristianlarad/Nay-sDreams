@@ -9,8 +9,8 @@ import { ArrowLeft, Pencil, Save } from "lucide-react";
 
 import { useGetOne } from "@/hooks/useGetOne";
 import {
-  createProductShema,
-  type ICreateProducts,
+  editProductSchema,
+  IEditPRoduct,
   type IProductOne,
 } from "@/types/products";
 import {
@@ -37,12 +37,12 @@ const EditProductPage = () => {
   );
 
   const product = data?.product;
-  const form = useForm<ICreateProducts>({
-    resolver: yupResolver(createProductShema),
+  const form = useForm<IEditPRoduct>({
+    resolver: yupResolver(editProductSchema),
     defaultValues: product,
   });
 
-  const onSubmit = (data: ICreateProducts) => {
+  const onSubmit = (data: IEditPRoduct) => {
     console.log(data);
   };
 

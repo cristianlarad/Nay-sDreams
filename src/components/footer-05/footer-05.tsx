@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import UserAvatar from "../ui/userAvatar";
-import logo from "../../../public/logo.jpg";
+import logo from "../../../public/logo.webp";
 
 const businessInfo = {
   name: "Nay'sDreams",
